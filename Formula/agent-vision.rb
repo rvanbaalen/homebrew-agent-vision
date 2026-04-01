@@ -1,8 +1,8 @@
 class AgentVision < Formula
   desc "Give AI agents eyes on your screen"
   homepage "https://github.com/rvanbaalen/agent-vision"
-  url "https://github.com/rvanbaalen/agent-vision/archive/refs/tags/v0.6.2.tar.gz"
-  sha256 "3416cace7a4dfcd8bf07b9838d26e7af12a797f663422ef8c70364a731fc0a0e"
+  url "https://github.com/rvanbaalen/agent-vision/archive/refs/tags/v0.6.3.tar.gz"
+  sha256 "4a5003a31fa70026bd2b2685fe4b66f26e962d76ffeffc57ca76284c8ba17f5a"
   license "MIT"
 
   depends_on xcode: ["16.0", :build]

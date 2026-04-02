@@ -1,20 +1,54 @@
 class AgentVision < Formula
   desc "Give AI agents eyes on your screen"
   homepage "https://github.com/rvanbaalen/agent-vision"
-  url "https://github.com/rvanbaalen/agent-vision/releases/download/v0.6.4/agent-vision-arm64.tar.gz"
-  sha256 "FILL_AFTER_RELEASE"
+  url "https://github.com/rvanbaalen/agent-vision/archive/refs/tags/v0.6.3.tar.gz"
+  sha256 "4a5003a31fa70026bd2b2685fe4b66f26e962d76ffeffc57ca76284c8ba17f5a"
   license "MIT"
 
+  depends_on xcode: ["16.0", :build]
   depends_on :macos => :sonoma
   depends_on arch: :arm64
 
   def install
-    app_bundle = prefix/"Agent Vision.app"
-    (app_bundle).mkpath
-    cp_r Dir["Agent Vision.app/*"], app_bundle
+    system "swift", "build", "-c", "release", "--disable-sandbox"
 
-    # Remove quarantine attribute to prevent Gatekeeper from blocking the ad-hoc signed binary
-    system "xattr", "-cr", app_bundle.to_s
+    app_bundle = prefix/"Agent Vision.app"
+    (app_bundle/"Contents/MacOS").mkpath
+    (app_bundle/"Contents/Resources").mkpath
+
+    cp ".build/release/agent-vision", app_bundle/"Contents/MacOS/agent-vision"
+
+    (app_bundle/"Contents/Info.plist").write <<~PLIST
+      <?xml version="1.0" encoding="UTF-8"?>
+      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+        "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+      <plist version="1.0">
+      <dict>
+        <key>CFBundleName</key>
+        <string>Agent Vision</string>
+        <key>CFBundleDisplayName</key>
+        <string>Agent Vision</string>
+        <key>CFBundleIdentifier</key>
+        <string>com.agent-vision.app</string>
+        <key>CFBundleVersion</key>
+        <string>#{version}</string>
+        <key>CFBundleShortVersionString</key>
+        <string>#{version}</string>
+        <key>CFBundleExecutable</key>
+        <string>agent-vision</string>
+        <key>CFBundlePackageType</key>
+        <string>APPL</string>
+        <key>LSMinimumSystemVersion</key>
+        <string>14.0</string>
+        <key>LSUIElement</key>
+        <true/>
+        <key>NSScreenCaptureUsageDescription</key>
+        <string>Agent Vision needs screen recording access to capture screenshots of the selected area.</string>
+      </dict>
+      </plist>
+    PLIST
+
+    system "codesign", "--force", "--sign", "-", "--deep", app_bundle.to_s
 
     bin.install_symlink app_bundle/"Contents/MacOS/agent-vision"
   end

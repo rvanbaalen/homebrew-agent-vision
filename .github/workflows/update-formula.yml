@@ -19,8 +19,8 @@ jobs:
           TAG: ${{ github.event.client_payload.tag }}
           SHA256: ${{ github.event.client_payload.sha256 }}
         run: |
-          sed -i "s|archive/refs/tags/v[0-9]*\.[0-9]*\.[0-9]*\.tar\.gz|archive/refs/tags/${TAG}.tar.gz|" Formula/agent-vision.rb
-          sed -i "s|sha256 \"[a-f0-9]*\"|sha256 \"${SHA256}\"|" Formula/agent-vision.rb
+          sed -i "s|releases/download/v[0-9]*\.[0-9]*\.[0-9]*/agent-vision-arm64\.tar\.gz|releases/download/${TAG}/agent-vision-arm64.tar.gz|" Formula/agent-vision.rb
+          sed -i "s|sha256 \"[a-fA-F0-9_]*\"|sha256 \"${SHA256}\"|" Formula/agent-vision.rb
           cat Formula/agent-vision.rb
 
       - name: Commit and push

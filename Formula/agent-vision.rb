@@ -1,7 +1,7 @@
 class AgentVision < Formula
   desc "Give AI agents eyes on your screen"
   homepage "https://github.com/rvanbaalen/agent-vision"
-  url "https://github.com/rvanbaalen/agent-vision/releases/download/v0.1.0/agent-vision-arm64.tar.gz"
+  url "https://github.com/rvanbaalen/agent-vision/releases/download/v0.6.4/agent-vision-arm64.tar.gz"
   sha256 "FILL_AFTER_RELEASE"
   license "MIT"
 
